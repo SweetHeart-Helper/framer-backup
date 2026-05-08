@@ -101,9 +101,7 @@ export default function FullProfile(props: any) {
                 background: `linear-gradient(to bottom, ${accentColor}, transparent)`,
               }}
             />
-            const finalAvatar = profileImage ||
-            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop";
-            // [UI 적용]
+
             <div style={avatarWrapperStyle}>
               <div
                 style={{
