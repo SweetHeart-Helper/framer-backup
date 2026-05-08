@@ -44,6 +44,7 @@ export default function FullProfile(props: any) {
     customText,
     customCard,
     customBorder,
+    selectedStacks, // 드롭다운에서 선택된 스택 리스트 추가
   } = props;
 
   const isDark = themeMode === "Dark";
@@ -75,14 +76,6 @@ export default function FullProfile(props: any) {
           : "#E5E5E5",
   };
 
-  const techStack = [
-    "React",
-    "Next.js",
-    "TypeScript",
-    "Tailwind CSS",
-    "Framer",
-  ];
-
   return (
     <section style={{ ...sectionStyle, backgroundColor: theme.bg }}>
       <div
@@ -101,16 +94,7 @@ export default function FullProfile(props: any) {
                 background: `linear-gradient(to bottom, ${accentColor}, transparent)`,
               }}
             />
-
-            <div style={avatarWrapperStyle}>
-              <div
-                style={{
-                  ...glowStyle,
-                  background: `linear-gradient(to bottom, ${accentColor}, transparent)`,
-                }}
-              />
-              <img src={finalAvatar} alt="profile" style={avatarStyle} />
-            </div>
+            <img src={finalAvatar} alt="profile" style={avatarStyle} />
           </div>
           <h1 style={{ ...titleStyle, color: theme.text }}>{name}</h1>
           <p
@@ -140,20 +124,43 @@ export default function FullProfile(props: any) {
         </div>
 
         {/* Tech Stack */}
+        {/* Tech Stack - 장바구니 리스트 출력 */}
+        {/* Tech Stack List */}
         <div style={stackContainerStyle}>
-          {techStack.map((item) => (
-            <div
-              key={item}
-              style={{
-                ...stackItemStyle,
-                backgroundColor: theme.bg,
-                borderColor: theme.border,
-                color: theme.text,
-              }}
-            >
-              {item}
-            </div>
-          ))}
+          {selectedStacks &&
+            selectedStacks.map((item: string, index: number) => {
+              // ✅ Logic: If "None" is selected, don't render anything (Delete effect)
+              if (item === "None" || !item) return null;
+
+              return (
+                <div
+                  key={`${item}-${index}`}
+                  style={{
+                    ...stackItemStyle,
+                    backgroundColor: theme.bg,
+                    borderColor: theme.border,
+                    color: theme.text,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  {/* Auto-match icon from STACK_ICONS */}
+                  {STACK_ICONS[item] && (
+                    <img
+                      src={STACK_ICONS[item]}
+                      style={{
+                        width: "16px",
+                        height: "16px",
+                        objectFit: "contain",
+                      }}
+                      alt={item}
+                    />
+                  )}
+                  <span>{item}</span>
+                </div>
+              );
+            })}
         </div>
 
         {/* Featured Projects */}
@@ -244,7 +251,7 @@ addPropertyControls(FullProfile, {
   name: { type: ControlType.String, defaultValue: "Assembler" },
   tagline: {
     type: ControlType.String,
-    defaultValue: "Building simple tools...",
+    defaultValue: "Building simple tools that solve real problems.",
     displayTextArea: true,
   },
   badgeText: { type: ControlType.String, defaultValue: "Solo Developer" },
@@ -274,6 +281,32 @@ addPropertyControls(FullProfile, {
       return !props.useCustomColors;
     },
   },
+
+  selectedStacks: {
+    type: ControlType.Array,
+    title: "My Tech Stack",
+    control: {
+      type: ControlType.Enum,
+      // ✅ "None" is at the top for easy removal without right-clicking
+      options: [
+        "None",
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "Framer",
+      ],
+      optionTitles: [
+        "🚫 Remove this item",
+        "💙 React",
+        "🖤 Next.js",
+        "💙 TypeScript",
+        "💙 Tailwind",
+        "🖤 Framer",
+      ],
+    },
+    defaultValue: ["React", "Next.js", "TypeScript"],
+  },
 });
 
 // --- Styles (CSS-in-JS) ---
@@ -299,7 +332,7 @@ const avatarWrapperStyle = {
   position: "relative" as const,
   width: "144px",
   height: "144px",
-  margin: "0 auto clamp(60px, 10vw, 120px) auto",
+  margin: "0 auto 24px auto",
 };
 const glowStyle = {
   position: "absolute" as const,
@@ -382,6 +415,15 @@ const projectImageStyle = {
   width: "100%",
   height: "100%",
   objectFit: "cover" as const,
+};
+
+// [Data] 스택별 아이콘 주소 정의
+const STACK_ICONS: { [key: string]: string } = {
+  React: "https://framerusercontent.com/images/OK6y9S8S4f8S.png",
+  "Next.js": "https://framerusercontent.com/images/...", // 여기에 실제 아이콘 URL을 넣으세요
+  TypeScript: "https://framerusercontent.com/images/...",
+  "Tailwind CSS": "https://framerusercontent.com/images/...",
+  Framer: "https://framerusercontent.com/images/...",
 };
 const projectContentStyle = {
   display: "flex",
