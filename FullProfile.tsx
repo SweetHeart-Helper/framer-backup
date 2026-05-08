@@ -31,7 +31,7 @@ const PROJECTS = [
   },
 ];
 
-export default function FullProfile(props) {
+export default function FullProfile(props: any) {
   const {
     themeMode,
     name,
@@ -47,6 +47,10 @@ export default function FullProfile(props) {
   } = props;
 
   const isDark = themeMode === "Dark";
+
+  const finalAvatar =
+    profileImage ||
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop";
 
   // ✅ [STRICT LOGIC] 모드 전환 시 무조건 반전, 'Custom' 체크 시에만 피커 허용
   const theme = {
@@ -97,14 +101,18 @@ export default function FullProfile(props) {
                 background: `linear-gradient(to bottom, ${accentColor}, transparent)`,
               }}
             />
-            <img
-              src={
-                profileImage ||
-                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop"
-              }
-              alt="profile"
-              style={avatarStyle}
-            />
+            const finalAvatar = profileImage ||
+            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop";
+            // [UI 적용]
+            <div style={avatarWrapperStyle}>
+              <div
+                style={{
+                  ...glowStyle,
+                  background: `linear-gradient(to bottom, ${accentColor}, transparent)`,
+                }}
+              />
+              <img src={finalAvatar} alt="profile" style={avatarStyle} />
+            </div>
           </div>
           <h1 style={{ ...titleStyle, color: theme.text }}>{name}</h1>
           <p
@@ -231,6 +239,10 @@ addPropertyControls(FullProfile, {
     optionTitles: ["☀️ Light", "🌙 Dark"],
     defaultValue: "Light",
   },
+  profileImage: {
+    type: ControlType.Image,
+    title: "Avatar Image",
+  },
   name: { type: ControlType.String, defaultValue: "Assembler" },
   tagline: {
     type: ControlType.String,
@@ -289,7 +301,7 @@ const avatarWrapperStyle = {
   position: "relative" as const,
   width: "144px",
   height: "144px",
-  margin: "0 auto",
+  margin: "0 auto clamp(60px, 10vw, 120px) auto",
 };
 const glowStyle = {
   position: "absolute" as const,
@@ -307,9 +319,9 @@ const avatarStyle = {
   border: "4px solid white",
 };
 const titleStyle = {
-  fontSize: "60px",
+  fontSize: "52px", // 60px에서 52px로 살짝 줄여 겹침을 방지합니다.
   fontWeight: 800,
-  margin: "24px 0 8px 0",
+  margin: "0 0 12px 0", // 위쪽(24px)은 없애고 아래쪽만 12px 둡니다.
   letterSpacing: "-0.04em",
 };
 const taglineStyle = {
