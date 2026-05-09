@@ -192,14 +192,21 @@ export default function FullProfile(props: any) {
                   >
                     {p.desc}
                   </p>
-                  <div
-                    style={{
-                      ...projectActionStyle,
-                      color: p.color || accentColor,
-                    }}
+                  <a
+                    href={p.link || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none" }}
                   >
-                    {p.action || "Try it"} →
-                  </div>
+                    <div
+                      style={{
+                        ...projectActionStyle,
+                        color: p.color || accentColor,
+                      }}
+                    >
+                      {p.action || "Try it"} →
+                    </div>
+                  </a>
                 </div>
               </div>
             ))}
@@ -334,16 +341,18 @@ addPropertyControls(FullProfile, {
           title: "Desc",
           displayTextArea: true,
         },
+        /* link라는 칸을 새로 만들어서 주소를 적을 수 있게 합니다. */
         image: { type: ControlType.Image, title: "Image" },
-        color: {
-          type: ControlType.Color,
-          title: "Image BG",
-          defaultValue: "#F5F5F7",
-        },
+        color: { type: ControlType.Color, title: "Color" },
         action: {
           type: ControlType.String,
           title: "Button",
           defaultValue: "Try it",
+        },
+        link: {
+          type: ControlType.String,
+          title: "Link URL",
+          defaultValue: "https://",
         },
       },
     },
