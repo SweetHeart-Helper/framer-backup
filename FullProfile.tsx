@@ -1,37 +1,6 @@
 import * as React from "react";
 import { addPropertyControls, ControlType } from "framer";
 
-// 프로젝트 리스트 (기존 동일)
-const PROJECTS = [
-  {
-    title: "Mortgage Calculator",
-    status: "Featured",
-    desc: "A smart tool to compare real mortgage costs — not just monthly payments.",
-    action: "Try it",
-    image:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1200&auto=format&fit=crop",
-    color: "#8b5cf6",
-  },
-  {
-    title: "Recipe Finder",
-    status: "In Progress",
-    desc: "Click your ingredients and instantly discover recipes you can make.",
-    action: "Preview",
-    image:
-      "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1200&auto=format&fit=crop",
-    color: "#3b82f6",
-  },
-  {
-    title: "Daily Converter",
-    status: "Personal Project",
-    desc: "A fast and simple unit converter for everyday use.",
-    action: "Try it",
-    image:
-      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop",
-    color: "#10b981",
-  },
-];
-
 export default function FullProfile(props: any) {
   const {
     themeMode,
@@ -45,8 +14,8 @@ export default function FullProfile(props: any) {
     customText,
     customCard,
     customBorder,
-    selectedStacks, // 기존 리스트
-    stackCustomIcons, // ✅ 새로 추가된 업로드 이미지 뭉치
+    userStacks, // 3번 방: 테크 스택 데이터
+    userProjects, // 4번 방: 프로젝트 데이터
   } = props;
 
   const isDark = themeMode === "Dark";
@@ -54,6 +23,7 @@ export default function FullProfile(props: any) {
     profileImage ||
     "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400";
 
+  // 테마 설정 (2번 방 Manual Override 반영)
   const theme = {
     bg: useCustomColors && customBg ? customBg : isDark ? "#000000" : "#FFFFFF",
     text:
@@ -85,7 +55,7 @@ export default function FullProfile(props: any) {
           borderColor: theme.border,
         }}
       >
-        {/* Profile Header */}
+        {/* --- [1번 방 데이터 출력] Profile Header --- */}
         <div style={profileHeaderStyle}>
           <div style={avatarWrapperStyle}>
             <div
@@ -112,17 +82,10 @@ export default function FullProfile(props: any) {
           </div>
         </div>
 
-        {/* Tech Stack List (기존 리스트 방식 그대로 유지) */}
-        {/* ✅ 수정된 Tech Stack: 구매자가 직접 입력하고 업로드한 리스트만 출력 */}
-        {/* ✅ 통합된 테크 스택: 이름 입력, 업로드/크롭 결과 출력 */}
-        {/* ✅ X 버튼으로 삭제 가능한 테크 스택 리스트 */}
-        {/* ✅ 4가지 기능 통합: 이름 + 업로드 + 크롭 + 삭제(가시적 버튼) */}
-        {/* ✅ 구매자가 목록에서 직접 삭제하면 화면에서도 즉시 제거됨 */}
-        {/* ✅ Clear 스위치가 켜진 항목은 화면에서 싹 비워짐 */}
+        {/* --- [3번 방 데이터 출력] Tech Stack List --- */}
         <div style={stackContainerStyle}>
-          {props.userStacks &&
-            props.userStacks.map((item: any, index: number) => {
-              // 1. Clear 스위치가 켜졌거나 2. 내용이 아예 없으면 화면에 표시하지 않음
+          {userStacks &&
+            userStacks.map((item: any, index: number) => {
               if (
                 !item ||
                 item.isCleared ||
@@ -135,9 +98,9 @@ export default function FullProfile(props: any) {
                   key={index}
                   style={{
                     ...stackItemStyle,
-                    backgroundColor: "#FFFFFF",
-                    borderColor: "#E5E5E5",
-                    color: "#000000",
+                    backgroundColor: isDark ? "#1A1A1A" : "#FFFFFF",
+                    borderColor: theme.border,
+                    color: theme.text,
                     display: "flex",
                     alignItems: "center",
                     gap: "8px",
@@ -160,7 +123,7 @@ export default function FullProfile(props: any) {
             })}
         </div>
 
-        {/* Featured Projects (기존 동일) */}
+        {/* --- [4번 방 데이터 출력] Featured Projects --- */}
         <div style={projectSectionHeaderStyle}>
           <h2 style={{ ...sectionTitleStyle, color: theme.text }}>
             Featured Projects
@@ -171,125 +134,223 @@ export default function FullProfile(props: any) {
         </div>
 
         <div style={projectListStyle}>
-          {PROJECTS.map((p) => (
-            <div
-              key={p.title}
-              style={{
-                ...projectCardStyle,
-                backgroundColor: theme.card,
-                borderColor: theme.border,
-              }}
-            >
-              <div style={projectImageWrapperStyle}>
-                <img src={p.image} alt={p.title} style={projectImageStyle} />
-              </div>
-              <div style={projectContentStyle}>
-                <div
-                  style={{
-                    ...projectStatusStyle,
-                    color: theme.text,
-                    opacity: 0.6,
-                  }}
-                >
-                  <div
-                    style={{ ...statusDotStyle, backgroundColor: p.color }}
+          {userProjects &&
+            userProjects.map((p: any, index: number) => (
+              <div
+                key={index}
+                style={{
+                  ...projectCardStyle,
+                  backgroundColor: theme.card,
+                  borderColor: theme.border,
+                }}
+              >
+                <div style={projectImageWrapperStyle}>
+                  <img
+                    src={
+                      p.image ||
+                      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1200"
+                    }
+                    alt={p.title}
+                    style={projectImageStyle}
                   />
-                  {p.status}
                 </div>
-                <h3 style={{ ...projectTitleStyle, color: theme.text }}>
-                  {p.title}
-                </h3>
-                <p
-                  style={{
-                    ...projectDescStyle,
-                    color: theme.text,
-                    opacity: 0.7,
-                  }}
-                >
-                  {p.desc}
-                </p>
-                <div style={{ ...projectActionStyle, color: accentColor }}>
-                  {p.action} →
+                <div style={projectContentStyle}>
+                  <div
+                    style={{
+                      ...projectStatusStyle,
+                      color: theme.text,
+                      opacity: 0.6,
+                    }}
+                  >
+                    <div
+                      style={{
+                        ...statusDotStyle,
+                        backgroundColor: p.color || accentColor,
+                      }}
+                    />
+                    {p.status}
+                  </div>
+                  <h3 style={{ ...projectTitleStyle, color: theme.text }}>
+                    {p.title}
+                  </h3>
+                  <p
+                    style={{
+                      ...projectDescStyle,
+                      color: theme.text,
+                      opacity: 0.7,
+                    }}
+                  >
+                    {p.desc}
+                  </p>
+                  <div
+                    style={{
+                      ...projectActionStyle,
+                      color: p.color || accentColor,
+                    }}
+                  >
+                    {p.action || "Try it"} →
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </section>
   );
 }
 
+// --- [속성창 가벽 세우기] ---
 addPropertyControls(FullProfile, {
+  /* 📂 [1번 방] Profile Settings */
+  showProfileSettings: {
+    type: ControlType.Boolean,
+    title: "📂 Profile Settings",
+    defaultValue: true,
+  },
+  profileImage: {
+    type: ControlType.Image,
+    title: "└ Avatar",
+    hidden: (props) => !props.showProfileSettings,
+  },
+  name: {
+    type: ControlType.String,
+    title: "└ Name",
+    defaultValue: "Assembler",
+    hidden: (props) => !props.showProfileSettings,
+  },
+  tagline: {
+    type: ControlType.String,
+    title: "└ Tagline",
+    defaultValue: "Building simple tools...",
+    displayTextArea: true,
+    hidden: (props) => !props.showProfileSettings,
+  },
+  badgeText: {
+    type: ControlType.String,
+    title: "└ Badge",
+    defaultValue: "Solo Developer",
+    hidden: (props) => !props.showProfileSettings,
+  },
+
+  /* 📂 [2번 방] Design System */
+  showDesignSystem: {
+    type: ControlType.Boolean,
+    title: "📂 Design System",
+    defaultValue: false,
+  },
   themeMode: {
     type: ControlType.Enum,
-    title: "Theme Mode",
+    title: "└ Theme Mode",
     options: ["Light", "Dark"],
     optionTitles: ["☀️ Light", "🌙 Dark"],
     defaultValue: "Light",
+    hidden: (props) => !props.showDesignSystem,
   },
-  profileImage: { type: ControlType.Image, title: "Avatar Image" },
-  name: { type: ControlType.String, defaultValue: "Assembler" },
-  tagline: {
-    type: ControlType.String,
-    defaultValue: "Building simple tools that solve real problems.",
-    displayTextArea: true,
-  },
-  badgeText: { type: ControlType.String, defaultValue: "Solo Developer" },
   accentColor: {
     type: ControlType.Color,
-    title: "Accent Color",
+    title: "└ Accent Color",
     defaultValue: "#8b5cf6",
+    hidden: (props) => !props.showDesignSystem,
   },
   useCustomColors: {
     type: ControlType.Boolean,
-    title: "Manual Override",
+    title: "└ Manual Override",
     defaultValue: false,
+    hidden: (props) => !props.showDesignSystem,
   },
   customBg: {
     type: ControlType.Color,
-    title: "Custom BG",
-    hidden: (props) => !props.useCustomColors,
+    title: "  └ Custom BG",
+    hidden: (props) => !props.showDesignSystem || !props.useCustomColors,
   },
   customText: {
     type: ControlType.Color,
-    title: "Custom Text",
-    hidden: (props) => !props.useCustomColors,
+    title: "  └ Custom Text",
+    hidden: (props) => !props.showDesignSystem || !props.useCustomColors,
+  },
+  customCard: {
+    type: ControlType.Color,
+    title: "  └ Custom Card",
+    hidden: (props) => !props.showDesignSystem || !props.useCustomColors,
+  },
+  customBorder: {
+    type: ControlType.Color,
+    title: "  └ Custom Border",
+    hidden: (props) => !props.showDesignSystem || !props.useCustomColors,
   },
 
-  // 기존 스택 선택 시스템 (건드리지 않음)
-  // ✅ 구매자를 위한 4개 핵심 기능 (타이핑, 업로드, 삭제, Crop)
+  /* 📂 [3번 방] Tech Stack List */
+  showStackSettings: {
+    type: ControlType.Boolean,
+    title: "📂 Tech Stack List",
+    defaultValue: false,
+  },
   userStacks: {
     type: ControlType.Array,
-    title: "My Tech Stack",
+    title: "└ My Tech Stack",
+    hidden: (props) => !props.showStackSettings,
     control: {
       type: ControlType.Object,
       controls: {
-        // 1. 이름 입력 (타이핑)
-        stackName: {
-          type: ControlType.String,
-          title: "Name",
-          placeholder: "Enter your name",
-        },
-        // 2 & 4. 업로드 및 크롭 (아이콘)
-        stackIcon: {
-          type: ControlType.Image,
-          title: "Icon",
-        },
-        // 3. 클리어 기능 (X나 휴지통보다 훨씬 직관적인 비우기 스위치)
+        stackName: { type: ControlType.String, title: "Name" },
+        stackIcon: { type: ControlType.Image, title: "Icon" },
         isCleared: {
           type: ControlType.Boolean,
-          title: "✨ Clear Content",
+          title: "✨ Clear",
           defaultValue: false,
         },
       },
     },
     defaultValue: [{ stackName: "React" }, { stackName: "Next.js" }],
   },
-  // ✅ 추가: 아이콘이 안 나올 때 직접 업로드할 수 있는 칸만 딱 추가했습니다!
+
+  /* 📂 [4번 방] Project Details */
+  showProjectSettings: {
+    type: ControlType.Boolean,
+    title: "📂 Project Details",
+    defaultValue: false,
+  },
+  userProjects: {
+    type: ControlType.Array,
+    title: "└ My Projects",
+    hidden: (props) => !props.showProjectSettings,
+    control: {
+      type: ControlType.Object,
+      controls: {
+        title: { type: ControlType.String, title: "Title" },
+        status: { type: ControlType.String, title: "Status" },
+        desc: {
+          type: ControlType.String,
+          title: "Desc",
+          displayTextArea: true,
+        },
+        image: { type: ControlType.Image, title: "Image" },
+        color: { type: ControlType.Color, title: "Color" },
+        action: {
+          type: ControlType.String,
+          title: "Button",
+          defaultValue: "Try it",
+        },
+      },
+    },
+    defaultValue: [
+      {
+        title: "Mortgage Calculator",
+        status: "Featured",
+        desc: "A smart tool...",
+        color: "#8b5cf6",
+      },
+      {
+        title: "Recipe Finder",
+        status: "In Progress",
+        desc: "Discover recipes...",
+        color: "#3b82f6",
+      },
+    ],
+  },
 });
 
-// [Styles - 기존 동일]
+// --- [스타일 정의] (기존 스타일 동일 유지) ---
 const sectionStyle = {
   minHeight: "100vh",
   display: "flex",
@@ -420,12 +481,3 @@ const projectDescStyle = {
   marginBottom: "16px",
 };
 const projectActionStyle = { fontSize: "16px", fontWeight: 600 };
-
-// [Data] 기존 주소 (그대로 유지)
-const STACK_ICONS: { [key: string]: string } = {
-  React: "https://framerusercontent.com/images/OK6y9S8S4f8S.png",
-  "Next.js": "",
-  TypeScript: "",
-  "Tailwind CSS": "",
-  Framer: "",
-};
