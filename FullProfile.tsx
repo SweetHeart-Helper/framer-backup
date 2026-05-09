@@ -137,9 +137,9 @@ export default function FullProfile(props: any) {
                   key={`${item}-${index}`}
                   style={{
                     ...stackItemStyle,
-                    backgroundColor: theme.bg,
-                    borderColor: theme.border,
-                    color: theme.text,
+                    backgroundColor: "#FFFFFF",
+                    borderColor: "#E5E5E5",
+                    color: "#000000",
                     display: "flex",
                     alignItems: "center",
                     gap: "8px",
@@ -147,12 +147,11 @@ export default function FullProfile(props: any) {
                 >
                   {/* Auto-match icon from STACK_ICONS */}
                   {STACK_ICONS[item] && (
-                    // FullProfile 함수 내부의 img 태그 스타일 부분
                     <img
                       src={STACK_ICONS[item]}
                       style={{
-                        width: "20px", // 16px에서 20px로 살짝 키움
-                        height: "20px",
+                        width: "16px",
+                        height: "16px",
                         objectFit: "contain",
                       }}
                       alt={item}
@@ -375,23 +374,15 @@ const stackContainerStyle = {
   display: "flex",
   flexWrap: "wrap" as const,
   justifyContent: "center",
-  gap: "12px", // 시안의 여유로운 간격 반영
+  gap: "10px",
   marginBottom: "56px",
-  width: "100%",
 };
 const stackItemStyle = {
-  display: "flex",
-  alignItems: "center",
-  gap: "8px",
-  padding: "10px 16px",
-  backgroundColor: "#FFFFFF", // 라이트 모드 기준 흰색 배경
-  border: "1px solid #F0F0F0", // 아주 연한 테두리
-  borderRadius: "16px", // 시안처럼 둥글게
+  padding: "12px 20px",
+  border: "1px solid",
+  borderRadius: "16px",
   fontSize: "14px",
-  fontWeight: 600, // 글자를 조금 더 또렷하게
-  color: "#333333",
-  boxShadow: "0 2px 8px rgba(0,0,0,0,05)", // 시안의 부드러운 입체감 추가
-  whiteSpace: "nowrap" as const,
+  fontWeight: 500,
 };
 const projectSectionHeaderStyle = {
   display: "flex",
