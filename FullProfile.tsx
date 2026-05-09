@@ -157,7 +157,11 @@ export default function FullProfile(props: any) {
                       "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1200"
                     }
                     alt={p.title}
-                    style={projectImageStyle}
+                    style={{
+                      ...projectImageStyle,
+
+                      backgroundColor: p.color || "#F5F5F7",
+                    }}
                   />
                 </div>
                 <div style={projectContentStyle}>
@@ -331,7 +335,11 @@ addPropertyControls(FullProfile, {
           displayTextArea: true,
         },
         image: { type: ControlType.Image, title: "Image" },
-        color: { type: ControlType.Color, title: "Color" },
+        color: {
+          type: ControlType.Color,
+          title: "Image BG",
+          defaultValue: "#F5F5F7",
+        },
         action: {
           type: ControlType.String,
           title: "Button",
@@ -350,6 +358,12 @@ addPropertyControls(FullProfile, {
         title: "Recipe Finder",
         status: "In Progress",
         desc: "Discover recipes...",
+        color: "#3b82f6",
+      },
+      {
+        title: "Daily Converter",
+        status: "Personal Project",
+        desc: "A fast and simple unit converter for everyday use.",
         color: "#3b82f6",
       },
     ],
@@ -462,7 +476,7 @@ const projectImageStyle = {
   width: "100%",
   height: "100%",
   objectFit: "contain" as const,
-  backgroundColor: "#F5F5F7",
+
   padding: "10px",
 };
 const projectContentStyle = {
