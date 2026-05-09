@@ -269,7 +269,7 @@ addPropertyControls(FullProfile, {
         stackName: {
           type: ControlType.String,
           title: "Name",
-          placeholder: "이름 입력",
+          placeholder: "Enter your name",
         },
         // 2 & 4. 업로드 및 크롭 (아이콘)
         stackIcon: {
@@ -287,16 +287,6 @@ addPropertyControls(FullProfile, {
     defaultValue: [{ stackName: "React" }, { stackName: "Next.js" }],
   },
   // ✅ 추가: 아이콘이 안 나올 때 직접 업로드할 수 있는 칸만 딱 추가했습니다!
-  stackCustomIcons: {
-    type: ControlType.Array,
-    title: "Upload Custom Icons",
-    control: {
-      type: ControlType.Object,
-      controls: {
-        icon: { type: ControlType.Image, title: "Icon File" },
-      },
-    },
-  },
 });
 
 // [Styles - 기존 동일]
