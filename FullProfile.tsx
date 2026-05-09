@@ -83,7 +83,6 @@ export default function FullProfile(props: any) {
         </div>
 
         {/* --- [3번 방 데이터 출력] Tech Stack List --- */}
-        {/* --- [3번 방 데이터 출력] Tech Stack List --- */}
         <div style={stackContainerStyle}>
           {userStacks &&
             userStacks.map((item: any, index: number) => {
@@ -99,16 +98,16 @@ export default function FullProfile(props: any) {
                   key={index}
                   style={{
                     ...stackItemStyle,
-                    /* 배경색을 밝은 계열로 고정하여 아이콘 가독성 확보 */
+
                     backgroundColor: isDark ? "#F5F5F7" : "#FFFFFF",
-                    /* 테두리를 아주 연하게 주어 깔끔하게 분리 */
+
                     borderColor: isDark ? "#E5E5E5" : theme.border,
-                    /* 글자색은 검은색 계열로 고정 (밝은 배경이므로) */
+
                     color: "#1d1d1f",
                     display: "flex",
                     alignItems: "center",
                     gap: "8px",
-                    boxShadow: "0 2px 4px rgba(0,0,0,0.05)", // 살짝 입체감 추가
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
                   }}
                 >
                   {item.stackIcon && (
@@ -118,7 +117,6 @@ export default function FullProfile(props: any) {
                         width: "16px",
                         height: "16px",
                         objectFit: "contain",
-                        /* 아이콘이 너무 검은색일 때 대비를 위해 아주 살짝 투명도 조절 가능 */
                       }}
                       alt={item.stackName}
                     />
@@ -463,7 +461,9 @@ const projectImageWrapperStyle = {
 const projectImageStyle = {
   width: "100%",
   height: "100%",
-  objectFit: "cover" as const,
+  objectFit: "contain" as const,
+  backgroundColor: "#F5F5F7",
+  padding: "10px",
 };
 const projectContentStyle = {
   display: "flex",
