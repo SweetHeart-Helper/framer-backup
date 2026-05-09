@@ -115,37 +115,49 @@ export default function FullProfile(props: any) {
         {/* Tech Stack List (기존 리스트 방식 그대로 유지) */}
         {/* ✅ 수정된 Tech Stack: 구매자가 직접 입력하고 업로드한 리스트만 출력 */}
         {/* ✅ 통합된 테크 스택: 이름 입력, 업로드/크롭 결과 출력 */}
+        {/* ✅ X 버튼으로 삭제 가능한 테크 스택 리스트 */}
+        {/* ✅ 4가지 기능 통합: 이름 + 업로드 + 크롭 + 삭제(가시적 버튼) */}
+        {/* ✅ 구매자가 목록에서 직접 삭제하면 화면에서도 즉시 제거됨 */}
+        {/* ✅ Clear 스위치가 켜진 항목은 화면에서 싹 비워짐 */}
         <div style={stackContainerStyle}>
           {props.userStacks &&
-            props.userStacks.map((item: any, index: number) => (
-              <div
-                key={index}
-                style={{
-                  ...stackItemStyle,
-                  backgroundColor: "#FFFFFF",
-                  borderColor: "#E5E5E5",
-                  color: "#000000",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                }}
-              >
-                {/* 2. 업로드 & 4. Crop된 아이콘 */}
-                {item.stackIcon && (
-                  <img
-                    src={item.stackIcon}
-                    style={{
-                      width: "16px",
-                      height: "16px",
-                      objectFit: "contain",
-                    }}
-                    alt={item.stackName}
-                  />
-                )}
-                {/* 1. 타이핑한 스택 이름 */}
-                <span>{item.stackName || "Skill"}</span>
-              </div>
-            ))}
+            props.userStacks.map((item: any, index: number) => {
+              // 1. Clear 스위치가 켜졌거나 2. 내용이 아예 없으면 화면에 표시하지 않음
+              if (
+                !item ||
+                item.isCleared ||
+                (!item.stackName && !item.stackIcon)
+              )
+                return null;
+
+              return (
+                <div
+                  key={index}
+                  style={{
+                    ...stackItemStyle,
+                    backgroundColor: "#FFFFFF",
+                    borderColor: "#E5E5E5",
+                    color: "#000000",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  {item.stackIcon && (
+                    <img
+                      src={item.stackIcon}
+                      style={{
+                        width: "16px",
+                        height: "16px",
+                        objectFit: "contain",
+                      }}
+                      alt={item.stackName}
+                    />
+                  )}
+                  <span>{item.stackName || ""}</span>
+                </div>
+              );
+            })}
         </div>
 
         {/* Featured Projects (기존 동일) */}
@@ -253,21 +265,25 @@ addPropertyControls(FullProfile, {
     control: {
       type: ControlType.Object,
       controls: {
-        // 1. 스택 이름 쓰기 (타이핑)
+        // 1. 이름 입력 (타이핑)
         stackName: {
           type: ControlType.String,
           title: "Name",
-          placeholder: "스택 이름을 입력하세요",
-          defaultValue: "React",
+          placeholder: "이름 입력",
         },
-        // 2. 이미지 업로드 & 4. Crop 기능 (Framer 기본 도구 활용)
+        // 2 & 4. 업로드 및 크롭 (아이콘)
         stackIcon: {
           type: ControlType.Image,
           title: "Icon",
         },
+        // 3. 클리어 기능 (X나 휴지통보다 훨씬 직관적인 비우기 스위치)
+        isCleared: {
+          type: ControlType.Boolean,
+          title: "✨ Clear Content",
+          defaultValue: false,
+        },
       },
     },
-    // 3. 스택 삭제 기능: Array 타입의 각 항목 옆에 생성되는 [-] 버튼으로 수행
     defaultValue: [{ stackName: "React" }, { stackName: "Next.js" }],
   },
   // ✅ 추가: 아이콘이 안 나올 때 직접 업로드할 수 있는 칸만 딱 추가했습니다!
