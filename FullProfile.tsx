@@ -317,50 +317,35 @@ addPropertyControls(FullProfile, {
   },
 
   /* 📂 [3번 방] Tech Stack List */
+  /* 📂 [3번 방] Tech Stack List */
   showStackSettings: {
     type: ControlType.Boolean,
     title: "📂 Tech Stack List",
-    defaultValue: false,
+    defaultValue: true, // 기본적으로 보이도록 설정
   },
+  /* 📂 [3번 방] Tech Stack List */
   userStacks: {
     type: ControlType.Array,
     title: "└ My Tech Stack",
     hidden: (props) => !props.showStackSettings,
     control: {
       type: ControlType.Object,
-      /* 4번 방 프로젝트 상세 설정 내부 */
       controls: {
-        title: { type: ControlType.String, title: "Title" },
-        status: { type: ControlType.String, title: "Status" },
-        desc: {
-          type: ControlType.String,
-          title: "Desc",
-          displayTextArea: true,
-        },
-        image: { type: ControlType.Image, title: "Image" },
-        // 이 Color는 이미지 뒤의 배경색이 됩니다.
-        color: {
-          type: ControlType.Color,
-          title: "Image BG",
-          defaultValue: "#F5F5F7",
-        },
-        // 이 Accent는 점(Dot)과 버튼의 색상이 됩니다. (비워두면 전체 엑센트 컬러를 따라감)
-        accent: { type: ControlType.Color, title: "Point Color" },
-        action: {
-          type: ControlType.String,
-          title: "Button",
-          defaultValue: "Try it",
-        },
-        link: {
-          type: ControlType.String,
-          title: "Link URL",
-          defaultValue: "https://",
+        stackName: { type: ControlType.String, title: "Name" },
+        stackIcon: { type: ControlType.Image, title: "Icon" },
+        /* ✅ 추가: 개별 항목을 숨길 수 있는 체크박스 */
+        isCleared: {
+          type: ControlType.Boolean,
+          title: "✨ Clear",
+          defaultValue: false,
         },
       },
     },
-    defaultValue: [{ stackName: "React" }, { stackName: "Next.js" }],
+    defaultValue: [
+      { stackName: "React", isCleared: false },
+      { stackName: "Next.js", isCleared: false },
+    ],
   },
-
   /* 📂 [4번 방] Project Details */
   showProjectSettings: {
     type: ControlType.Boolean,
