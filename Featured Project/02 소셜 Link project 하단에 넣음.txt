@@ -441,6 +441,49 @@ addPropertyControls(FullProfile, {
       { stackName: "Next.js", isCleared: false },
     ],
   },
+  /* 📂 [신규: 5번 방] Social Links */
+  showLinkSettings: {
+    type: ControlType.Boolean,
+    title: "📂 Social Links",
+    defaultValue: true,
+  },
+  userLinks: {
+    type: ControlType.Array,
+    title: "└ My Links",
+    hidden: (props) => !props.showLinkSettings,
+    control: {
+      type: ControlType.Object,
+      controls: {
+        title: { type: ControlType.String, title: "Title" },
+        subtitle: { type: ControlType.String, title: "Subtitle" },
+        icon: { type: ControlType.String, title: "Icon (Emoji)" },
+        url: {
+          type: ControlType.String,
+          title: "URL",
+          defaultValue: "https://",
+        },
+        isCleared: {
+          type: ControlType.Boolean,
+          title: "✨ Clear",
+          defaultValue: false,
+        },
+      },
+    },
+    defaultValue: [
+      {
+        title: "GitHub",
+        subtitle: "Code",
+        icon: "🐙",
+        url: "https://github.com",
+      },
+      {
+        title: "LinkedIn",
+        subtitle: "Connect",
+        icon: "💼",
+        url: "https://linkedin.com",
+      },
+    ],
+  },
 
   /* 📂 [4번 방] Project Details */
   showProjectSettings: {
@@ -509,50 +552,6 @@ addPropertyControls(FullProfile, {
         status: "Personal Project",
         desc: "A fast and simple unit converter for everyday use.",
         color: "#3b82f6",
-      },
-    ],
-  },
-
-  /* 📂 [신규: 5번 방] Social Links */
-  showLinkSettings: {
-    type: ControlType.Boolean,
-    title: "📂 Social Links",
-    defaultValue: true,
-  },
-  userLinks: {
-    type: ControlType.Array,
-    title: "└ My Links",
-    hidden: (props) => !props.showLinkSettings,
-    control: {
-      type: ControlType.Object,
-      controls: {
-        title: { type: ControlType.String, title: "Title" },
-        subtitle: { type: ControlType.String, title: "Subtitle" },
-        icon: { type: ControlType.String, title: "Icon (Emoji)" },
-        url: {
-          type: ControlType.String,
-          title: "URL",
-          defaultValue: "https://",
-        },
-        isCleared: {
-          type: ControlType.Boolean,
-          title: "✨ Clear",
-          defaultValue: false,
-        },
-      },
-    },
-    defaultValue: [
-      {
-        title: "GitHub",
-        subtitle: "Code",
-        icon: "🐙",
-        url: "https://github.com",
-      },
-      {
-        title: "LinkedIn",
-        subtitle: "Connect",
-        icon: "💼",
-        url: "https://linkedin.com",
       },
     ],
   },
