@@ -134,15 +134,24 @@ export default function FullProfile(props: any) {
           <h2 style={{ ...sectionTitleStyle, color: theme.text }}>
             Featured Projects
           </h2>
-          <span style={{ ...viewAllStyle, color: accentColor }}>
-            View all →
-          </span>
+          <a
+            href={props.viewAllLink || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              style={{ ...viewAllStyle, color: accentColor, cursor: "pointer" }}
+            >
+              View all →
+            </span>
+          </a>
         </div>
 
         <div style={projectListStyle}>
           {userProjects &&
             userProjects.map((p: any, index: number) => {
-              // [추가] 색상 우선순위 결정: 개별 설정 컬러(p.accent)가 없으면 전체 엑센트 컬러 사용
+              if (!p || p.isCleared) return null;
               const displayColor = p.accent || accentColor;
 
               return (
@@ -228,11 +237,13 @@ export default function FullProfile(props: any) {
 // --- [속성창 가벽 세우기] ---
 addPropertyControls(FullProfile, {
   /* 📂 [1번 방] Profile Settings */
+
   showProfileSettings: {
     type: ControlType.Boolean,
     title: "📂 Profile Settings",
     defaultValue: true,
   },
+
   profileImage: {
     type: ControlType.Image,
     title: "└ Avatar",
@@ -247,7 +258,7 @@ addPropertyControls(FullProfile, {
   tagline: {
     type: ControlType.String,
     title: "└ Tagline",
-    defaultValue: "Building simple tools...",
+    defaultValue: "Building simple tools that solve real problems.",
     displayTextArea: true,
     hidden: (props) => !props.showProfileSettings,
   },
@@ -356,6 +367,15 @@ addPropertyControls(FullProfile, {
     title: "📂 Project Details",
     defaultValue: false,
   },
+  viewAllLink: {
+    type: ControlType.String,
+    title: "  └ View All URL",
+    placeholder: "전체 프로젝트 페이지 링크",
+    defaultValue: "https://",
+    hidden(props) {
+      return !props.showProjectSettings;
+    },
+  },
   userProjects: {
     type: ControlType.Array,
     title: "└ My Projects",
@@ -382,6 +402,11 @@ addPropertyControls(FullProfile, {
           type: ControlType.String,
           title: "Link URL",
           defaultValue: "https://",
+        },
+        isCleared: {
+          type: ControlType.Boolean,
+          title: "✨ Clear",
+          defaultValue: false,
         },
       },
     },
