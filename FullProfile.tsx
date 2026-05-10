@@ -141,75 +141,84 @@ export default function FullProfile(props: any) {
 
         <div style={projectListStyle}>
           {userProjects &&
-            userProjects.map((p: any, index: number) => (
-              <div
-                key={index}
-                style={{
-                  ...projectCardStyle,
-                  backgroundColor: theme.card,
-                  borderColor: theme.border,
-                }}
-              >
-                <div style={projectImageWrapperStyle}>
-                  <img
-                    src={
-                      p.image ||
-                      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1200"
-                    }
-                    alt={p.title}
-                    style={{
-                      ...projectImageStyle,
+            userProjects.map((p: any, index: number) => {
+              // [추가] 색상 우선순위 결정: 개별 설정 컬러(p.accent)가 없으면 전체 엑센트 컬러 사용
+              const displayColor = p.accent || accentColor;
 
-                      backgroundColor: p.color || "#F5F5F7",
-                    }}
-                  />
-                </div>
-                <div style={projectContentStyle}>
-                  <div
-                    style={{
-                      ...projectStatusStyle,
-                      color: theme.text,
-                      opacity: 0.6,
-                    }}
-                  >
-                    <div
+              return (
+                <div
+                  key={index}
+                  style={{
+                    ...projectCardStyle,
+                    backgroundColor: theme.card,
+                    borderColor: theme.border,
+                  }}
+                >
+                  <div style={projectImageWrapperStyle}>
+                    <img
+                      src={
+                        p.image ||
+                        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1200"
+                      }
+                      alt={p.title}
                       style={{
-                        ...statusDotStyle,
-                        backgroundColor: p.color || accentColor,
+                        ...projectImageStyle,
+                        // 이미지 배경색은 p.color(Image BG)를 사용합니다.
+                        backgroundColor: p.color || "#F5F5F7",
                       }}
                     />
-                    {p.status}
                   </div>
-                  <h3 style={{ ...projectTitleStyle, color: theme.text }}>
-                    {p.title}
-                  </h3>
-                  <p
-                    style={{
-                      ...projectDescStyle,
-                      color: theme.text,
-                      opacity: 0.7,
-                    }}
-                  >
-                    {p.desc}
-                  </p>
-                  <a
-                    href={p.link || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ textDecoration: "none" }}
-                  >
+                  <div style={projectContentStyle}>
+                    {/* 상태 글자와 점에 displayColor 적용 */}
                     <div
                       style={{
-                        ...projectActionStyle,
-                        color: p.color || accentColor,
+                        ...projectStatusStyle,
+                        color: displayColor,
+                        fontWeight: 600,
                       }}
                     >
-                      {p.action || "Try it"} →
+                      <div
+                        style={{
+                          ...statusDotStyle,
+                          backgroundColor: displayColor,
+                        }}
+                      />
+                      {p.status}
                     </div>
-                  </a>
+
+                    <h3 style={{ ...projectTitleStyle, color: theme.text }}>
+                      {p.title}
+                    </h3>
+                    <p
+                      style={{
+                        ...projectDescStyle,
+                        color: theme.text,
+                        opacity: 0.7,
+                      }}
+                    >
+                      {p.desc}
+                    </p>
+
+                    <a
+                      href={p.link && p.link !== "https://" ? p.link : "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ textDecoration: "none" }}
+                    >
+                      <div
+                        style={{
+                          ...projectActionStyle,
+                          color: displayColor, // 버튼 글자색에 적용
+                          cursor: "pointer",
+                        }}
+                      >
+                        {p.action || "Try it"} →
+                      </div>
+                    </a>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
         </div>
       </div>
     </section>
@@ -308,13 +317,33 @@ addPropertyControls(FullProfile, {
     hidden: (props) => !props.showStackSettings,
     control: {
       type: ControlType.Object,
+      /* 4번 방 프로젝트 상세 설정 내부 */
       controls: {
-        stackName: { type: ControlType.String, title: "Name" },
-        stackIcon: { type: ControlType.Image, title: "Icon" },
-        isCleared: {
-          type: ControlType.Boolean,
-          title: "✨ Clear",
-          defaultValue: false,
+        title: { type: ControlType.String, title: "Title" },
+        status: { type: ControlType.String, title: "Status" },
+        desc: {
+          type: ControlType.String,
+          title: "Desc",
+          displayTextArea: true,
+        },
+        image: { type: ControlType.Image, title: "Image" },
+        // 이 Color는 이미지 뒤의 배경색이 됩니다.
+        color: {
+          type: ControlType.Color,
+          title: "Image BG",
+          defaultValue: "#F5F5F7",
+        },
+        // 이 Accent는 점(Dot)과 버튼의 색상이 됩니다. (비워두면 전체 엑센트 컬러를 따라감)
+        accent: { type: ControlType.Color, title: "Point Color" },
+        action: {
+          type: ControlType.String,
+          title: "Button",
+          defaultValue: "Try it",
+        },
+        link: {
+          type: ControlType.String,
+          title: "Link URL",
+          defaultValue: "https://",
         },
       },
     },
