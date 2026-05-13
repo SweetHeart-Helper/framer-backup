@@ -1,6 +1,5 @@
 import React from "react";
 
-// 테마에 사용될 색상 타입 정의
 export interface Theme {
   bg: string;
   text: string;
@@ -8,7 +7,6 @@ export interface Theme {
   border: string;
 }
 
-// 외부에서 전달받을 Props 정의
 export interface ProfileHeaderProps {
   name: string;
   tagline: string;
@@ -26,7 +24,6 @@ export default function ProfileHeader({
   theme,
   accentColor,
 }: ProfileHeaderProps) {
-  // 프로필 이미지가 없을 경우 표시될 기본 이미지
   const finalAvatar =
     profileImage ||
     "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400";
@@ -51,21 +48,35 @@ export default function ProfileHeader({
       </p>
 
       {/* 상태 배지 영역 */}
+
       <div
         style={{
           ...badgeStyle,
-          backgroundColor: accentColor + "15", // 투명도 적용
+          backgroundColor: "transparent", // 배경은 투명하게
+          position: "relative",
           color: accentColor,
+          overflow: "hidden",
         }}
       >
-        <div style={{ ...dotStyle, backgroundColor: accentColor }} />
-        {badgeText}
+        {/* 무조건 적용되는 음영 레이어 */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundColor: accentColor, // 사용자가 고른 색상 그대로 사용
+            opacity: 0.12, // 여기서 투명도 15% 강제 적용
+            zIndex: 0,
+          }}
+        />
+
+        {/* Content Layer */}
+        <div style={{ ...dotStyle, backgroundColor: accentColor, zIndex: 1 }} />
+        <span style={{ zIndex: 1 }}>{badgeText}</span>
       </div>
     </div>
   );
 }
 
-// --- [스타일 정의] ---
 const profileHeaderStyle: React.CSSProperties = {
   textAlign: "center",
   marginBottom: "40px",

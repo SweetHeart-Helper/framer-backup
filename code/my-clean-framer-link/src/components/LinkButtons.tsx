@@ -1,7 +1,6 @@
 import * as React from "react";
 1;
 
-// 1. Props 인터페이스 정의
 export interface LinkItem {
   title?: string;
   subtitle?: string;
@@ -23,12 +22,9 @@ export interface LinkButtonsProps {
   accentColor: string;
 }
 
-// 2. 컴포넌트 내보내기 (Vite 호환)
 export function LinkButtons({ links, theme, accentColor }: LinkButtonsProps) {
-  // 개별 버튼의 호버 상태를 관리하기 위한 상태값
   const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
 
-  // isCleared가 true이거나 비어있는 링크 필터링 [cite: 61]
   const activeLinks = links?.filter((link) => link && !link.isCleared) || [];
 
   if (activeLinks.length === 0) return null;
@@ -67,13 +63,13 @@ export function LinkButtons({ links, theme, accentColor }: LinkButtonsProps) {
                   <span
                     style={{
                       ...titleTextStyle,
-                      color: theme.text, // 텍스트 색상을 테마와 연동
+                      color: theme.text,
                     }}
                   >
                     {link.title || "Link"}
                   </span>
                 </div>
-                {/* 화살표 아이콘 [cite: 74] */}
+
                 <span style={{ color: theme.text, opacity: 0.5 }}>↗</span>
               </div>
             </a>
@@ -84,27 +80,26 @@ export function LinkButtons({ links, theme, accentColor }: LinkButtonsProps) {
   );
 }
 
-// 3. 스타일 가이드 (React.CSSProperties)
 const containerStyle: React.CSSProperties = {
   width: "100%",
-  maxWidth: "768px", // 모바일/태블릿 화면 최대 너비 제한
+  maxWidth: "768px",
   margin: "0 auto",
-  padding: "0 20px", // 양옆 여백 확보
+  padding: "0 20px",
   boxSizing: "border-box",
 };
 
 const headingStyle: React.CSSProperties = {
-  fontSize: "clamp(24px, 5vw, 30px)", // 화면 크기에 따라 24px ~ 30px 사이로 유연하게 조절
+  fontSize: "clamp(24px, 5vw, 30px)",
   fontWeight: 700,
   marginBottom: "24px",
 };
 
 const linkListStyle: React.CSSProperties = {
   display: "flex",
-  flexDirection: "row", // 가로로 나열
-  flexWrap: "wrap", // 자리가 부족하면 다음 줄로 넘김
-  justifyContent: "center", // 가운데 정렬
-  gap: "16px", // 버튼 사이 간격
+  flexDirection: "row",
+  flexWrap: "wrap",
+  justifyContent: "center",
+  gap: "16px",
   marginTop: "20px",
   marginBottom: "40px",
 };
@@ -139,6 +134,6 @@ const iconStyle: React.CSSProperties = {
 };
 
 const titleTextStyle: React.CSSProperties = {
-  fontSize: "clamp(14px, 3.5vw, 16px)", // 모바일에서 너무 커지지 않게 글꼴 크기 제어
+  fontSize: "clamp(14px, 3.5vw, 16px)",
   fontWeight: 600,
 };
