@@ -101,16 +101,18 @@ const headingStyle: React.CSSProperties = {
 
 const linkListStyle: React.CSSProperties = {
   display: "flex",
-  flexDirection: "column",
-  gap: "12px",
+  flexDirection: "row", // 가로로 나열
+  flexWrap: "wrap", // 자리가 부족하면 다음 줄로 넘김
+  justifyContent: "center", // 가운데 정렬
+  gap: "16px", // 버튼 사이 간격
   marginTop: "20px",
   marginBottom: "40px",
 };
 
 const linkAnchorStyle: React.CSSProperties = {
-  width: "100%", // 버튼이 화면을 가득 채우도록 설정
+  width: "calc(33.33% - 12px)",
+  minWidth: "120px",
   textDecoration: "none",
-  WebkitTapHighlightColor: "transparent", // 모바일 터치 시 깜빡임 방지
 };
 
 const buttonCardStyle: React.CSSProperties = {
@@ -120,7 +122,7 @@ const buttonCardStyle: React.CSSProperties = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  transition: "all 0.2s ease-in-out", // 부드러운 테두리/그림자 호버 애니메이션
+  transition: "all 0.2s ease-in-out",
   cursor: "pointer",
 };
 

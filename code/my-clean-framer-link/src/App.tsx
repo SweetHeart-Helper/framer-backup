@@ -1,7 +1,7 @@
 // src/App.tsx
 import ProfileHeader from "./components/ProfileHeader";
 import { ProjectList } from "./components/ProjectComponents";
-import { TechStackList } from "./components/TechStackList"; // 이제 경로 에러가 없을 거예요!
+import { TechStackList } from "./components/TechStackList";
 import { LinkButtons } from "./components/LinkButtons";
 function App() {
   const name = "사용자 이름";
@@ -17,7 +17,6 @@ function App() {
   };
   const accentColor = "#007AFF";
 
-  // TechStackList에 넣어줄 가짜 데이터
   const mockTechStacks = [
     {
       stackName: "React",
