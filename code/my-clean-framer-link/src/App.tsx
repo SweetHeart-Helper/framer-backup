@@ -9,8 +9,8 @@ import { addPropertyControls, ControlType } from "framer";
 
 function App(props: any) {
   const {
-    name = "사용자 이름",
-    tagline = "Next.js와 Framer로 템플릿을 만드는 제작자입니다.",
+    name = "Assembler",
+    tagline = "Building simple tools that solve real problems.",
     badgeText = "Available for Projects",
     profileImage = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1000",
     accentColor = "#007AFF",
@@ -27,6 +27,7 @@ function App(props: any) {
     userStacks = [],
     viewAllUrl = "https://",
     userProjects = [],
+    cmsProjects, // 🔥 CMS 연결을 위한 프롭스 추가
     showLinkSettings = true,
     userLinks = [],
   } = props;
@@ -62,12 +63,17 @@ function App(props: any) {
 
         <div style={{ height: "40px" }} />
 
-        <ProjectList
-          projects={userProjects}
-          viewAllLink={viewAllUrl}
-          theme={theme}
-          accentColor={accentColor}
-        />
+        {/* 🔥 CMS가 연결되어 있으면 CMS를, 아니면 기존 수동 프로젝트 리스트를 보여줍니다 */}
+        {cmsProjects ? (
+          <div style={{ width: "100%" }}>{cmsProjects}</div>
+        ) : (
+          <ProjectList
+            projects={userProjects}
+            viewAllLink={viewAllUrl}
+            theme={theme}
+            accentColor={accentColor}
+          />
+        )}
 
         {showLinkSettings && userLinks && userLinks.length > 0 && (
           <div style={{ marginTop: "40px", marginBottom: "40px" }}>
@@ -100,6 +106,7 @@ function App(props: any) {
 export default App;
 
 addPropertyControls(App, {
+  // ... (기존 Profile Settings, Design System, Tech Stack 코드는 그대로 유지) ...
   showProfileSettings: {
     type: ControlType.Boolean,
     title: "📂 Profile Settings",
@@ -113,13 +120,13 @@ addPropertyControls(App, {
   name: {
     type: ControlType.String,
     title: "└ Name",
-    defaultValue: "사용자 이름",
+    defaultValue: "Assembler",
     hidden: (props) => !props.showProfileSettings,
   },
   tagline: {
     type: ControlType.String,
     title: "└ Tagline",
-    defaultValue: "Next.js와 Framer로 템플릿을 만드는 제작자입니다.",
+    defaultValue: "Building simple tools that solve real problems.",
     displayTextArea: true,
     hidden: (props) => !props.showProfileSettings,
   },
@@ -211,6 +218,14 @@ addPropertyControls(App, {
     title: "📂 Project Details",
     defaultValue: true,
   },
+
+  // 🔥 여기에 CMS 연결 슬롯을 추가합니다.
+  cmsProjects: {
+    type: ControlType.ComponentInstance,
+    title: "🔗 CMS 연결 (우선 적용)",
+    hidden: (props) => !props.showProjectDetails,
+  },
+
   viewAllUrl: {
     type: ControlType.String,
     title: "  └ View All URL",
@@ -219,7 +234,7 @@ addPropertyControls(App, {
   },
   userProjects: {
     type: ControlType.Array,
-    title: "  └ My Projects",
+    title: "  └ My Projects (수동 입력)",
     hidden: (props) => !props.showProjectDetails,
     control: {
       type: ControlType.Object,
