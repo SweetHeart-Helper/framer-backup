@@ -128,7 +128,7 @@ export function ProjectList({
             grid-template-columns: 260px 1fr;
             gap: 24px;
           }
-          /* 모바일 환경(768px 이하)에서 1열 레이아웃으로 변경 */
+          /* Responsive layout for mobile (768px or less) */
           @media (max-width: 768px) {
             .responsive-project-card {
               grid-template-columns: 1fr;

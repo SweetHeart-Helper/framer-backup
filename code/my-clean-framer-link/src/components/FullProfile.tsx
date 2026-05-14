@@ -16,7 +16,6 @@ export default function FullProfile(props: any) {
     userProjects,
   } = props;
 
-  // 에러 해결: theme 계산 전에 변수들이 먼저 정의되어야 합니다.
   const isDark = themeMode === "Dark";
 
   const theme = {
@@ -51,7 +50,6 @@ export default function FullProfile(props: any) {
           color: theme.text,
         }}
       >
-        {/* --- [4번 방] Project List 컴포넌트 호출 --- */}
         <ProjectList
           projects={userProjects}
           theme={theme}
@@ -63,7 +61,6 @@ export default function FullProfile(props: any) {
   );
 }
 
-// 에러 해결: 유실된 공통 스타일 정의
 const sectionStyle: React.CSSProperties = {
   width: "100%",
   display: "flex",
@@ -81,5 +78,3 @@ const containerStyle: React.CSSProperties = {
   flexDirection: "column",
   gap: "48px",
 };
-
-// ... addPropertyControls 로직 유지

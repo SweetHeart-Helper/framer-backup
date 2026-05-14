@@ -31,7 +31,6 @@ export default function ProfileHeader({
   return (
     <div style={profileHeaderStyle}>
       <div style={avatarWrapperStyle}>
-        {/* 아바타 뒤의 글로우 효과 */}
         <div
           style={{
             ...glowStyle,
@@ -47,29 +46,25 @@ export default function ProfileHeader({
         {tagline}
       </p>
 
-      {/* 상태 배지 영역 */}
-
       <div
         style={{
           ...badgeStyle,
-          backgroundColor: "transparent", // 배경은 투명하게
+          backgroundColor: "transparent",
           position: "relative",
           color: accentColor,
           overflow: "hidden",
         }}
       >
-        {/* 무조건 적용되는 음영 레이어 */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            backgroundColor: accentColor, // 사용자가 고른 색상 그대로 사용
-            opacity: 0.12, // 여기서 투명도 15% 강제 적용
+            backgroundColor: accentColor,
+            opacity: 0.12,
             zIndex: 0,
           }}
         />
 
-        {/* Content Layer */}
         <div style={{ ...dotStyle, backgroundColor: accentColor, zIndex: 1 }} />
         <span style={{ zIndex: 1 }}>{badgeText}</span>
       </div>

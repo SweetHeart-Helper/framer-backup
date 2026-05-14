@@ -1,5 +1,4 @@
 import * as React from "react";
-1;
 
 export interface LinkItem {
   title?: string;
@@ -51,16 +50,15 @@ export function LinkButtons({ links, theme, accentColor }: LinkButtonsProps) {
                 style={{
                   ...buttonCardStyle,
                   backgroundColor: "#F9F9FB",
-                  borderColor: isHovered ? accentColor : "#E5E5E7", // 테두리도 배경에 맞춰 연하게 고정
+                  borderColor: isHovered ? accentColor : "#E5E5E7",
                   boxShadow: isHovered ? `0 4px 12px ${accentColor}20` : "none",
                 }}
               >
                 <div style={contentWrapperStyle}>
                   {link.linkIcon && (
-                    /* 🟢 수정된 이미지 출력 로직: 컨테이너 추가 */
                     <div
                       style={{
-                        width: "32px", // 아이콘 크기 고정
+                        width: "32px",
                         height: "32px",
                         display: "flex",
                         alignItems: "center",
@@ -85,7 +83,7 @@ export function LinkButtons({ links, theme, accentColor }: LinkButtonsProps) {
                     style={{
                       ...titleTextStyle,
                       color: "#1D1D1F",
-                      marginLeft: "12px", // 아이콘과 텍스트 사이 간격
+                      marginLeft: "12px",
                     }}
                   >
                     {link.title || "Link"}

@@ -6,6 +6,7 @@ import { TechStackList } from "./components/TechStackList";
 import { LinkButtons } from "./components/LinkButtons";
 import StayInTouch from "./components/StayInTouch";
 import { addPropertyControls, ControlType } from "framer";
+
 function App(props: any) {
   const {
     name = "사용자 이름",
@@ -32,7 +33,6 @@ function App(props: any) {
 
   const isDark = themeMode === "Dark";
 
-  // 20.tsx 원본 기준 다크/라이트 모드 컬러 시스템
   const theme = {
     bg: useCustomColors ? customBg : isDark ? "#0D0D0D" : "#FFFFFF",
     text: useCustomColors ? customText : isDark ? "#FFFFFF" : "#1D1D1F",
@@ -49,7 +49,6 @@ function App(props: any) {
       }}
     >
       <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-        {/* 1. 헤더 */}
         <ProfileHeader
           name={name}
           tagline={tagline}
@@ -59,33 +58,27 @@ function App(props: any) {
           accentColor={accentColor}
         />
 
-        {/* 2. 기술 스택 - 여기서 사용하면 경고가 사라집니다! */}
-
         <TechStackList techStacks={userStacks} theme={theme} isDark={isDark} />
 
         <div style={{ height: "40px" }} />
 
-        {/* 3. 프로젝트 리스트 - 속성창 데이터 연결 */}
         <ProjectList
           projects={userProjects}
           viewAllLink={viewAllUrl}
           theme={theme}
           accentColor={accentColor}
         />
-        {/* --- Social Links (20.tsx 로직 기반 반응형) --- */}
 
-        {/* 🟢 20.tsx의 반응형 디자인이 담긴 LinkButtons 연결 */}
         {showLinkSettings && userLinks && userLinks.length > 0 && (
           <div style={{ marginTop: "40px", marginBottom: "40px" }}>
             <LinkButtons
-              links={userLinks} // Framer에서 입력한 링크 배열 전달
-              theme={theme} // 20.tsx의 컬러 시스템 전달
+              links={userLinks}
+              theme={theme}
               accentColor={accentColor}
             />
           </div>
         )}
 
-        {/* 🔴 [수정] StayInTouch 컴포넌트에 변수들을 연결해줘야 에러가 사라집니다. */}
         <div style={{ marginTop: "60px" }}>
           {isVisible && (
             <StayInTouch
@@ -107,7 +100,6 @@ function App(props: any) {
 export default App;
 
 addPropertyControls(App, {
-  /* 📂 [1번 방] Profile Settings - Yes/No 스위치 적용 */
   showProfileSettings: {
     type: ControlType.Boolean,
     title: "📂 Profile Settings",
@@ -138,9 +130,6 @@ addPropertyControls(App, {
     hidden: (props) => !props.showProfileSettings,
   },
 
-  /* 📂 [2번 방] Design System - 기존 변수명 엄격 준수 */
-  /* 📂 [2번 방] Design System - Yes/No 스위치 추가 */
-  /* 📂 [2번 방] Design System */
   showDesignSystem: {
     type: ControlType.Boolean,
     title: "📂 Design System",
@@ -160,7 +149,6 @@ addPropertyControls(App, {
     defaultValue: "#8b5cf6",
     hidden: (props) => !props.showDesignSystem,
   },
-  // 쏙 빠졌던 Manual Override 기능 추가
   useCustomColors: {
     type: ControlType.Boolean,
     title: "└ Manual Override",
@@ -188,15 +176,14 @@ addPropertyControls(App, {
     hidden: (props) => !props.showDesignSystem || !props.useCustomColors,
   },
 
-  /* 📂 [3번 방] Tech Stack - 이미지와 완벽하게 일치하도록 수정 */
   showTechStack: {
     type: ControlType.Boolean,
-    title: "📂 Tech Stack List", // 이미지와 동일한 타이틀
+    title: "📂 Tech Stack List",
     defaultValue: true,
   },
   userStacks: {
     type: ControlType.Array,
-    title: "  └ My Tech Stack", // 이미지와 동일한 하위 타이틀
+    title: "  └ My Tech Stack",
     hidden: (props) => !props.showTechStack,
     control: {
       type: ControlType.Object,
@@ -206,7 +193,6 @@ addPropertyControls(App, {
           type: ControlType.Image,
           title: "Icon",
         },
-        // 20.tsx 원본에 있는 초기화 스위치 추가
         isCleared: {
           type: ControlType.Boolean,
           title: "✨ Clear",
@@ -220,7 +206,6 @@ addPropertyControls(App, {
     ],
   },
 
-  /* 📂 [4번 방] Project Details */
   showProjectDetails: {
     type: ControlType.Boolean,
     title: "📂 Project Details",
@@ -276,14 +261,11 @@ addPropertyControls(App, {
       },
     ],
   },
-  /* 🟢 5번 방 Social Links (이미지의 폴더 구조와 일치) */
-  /* 🟢 5번 방 Social Links 설정 */
   showLinkSettings: {
     type: ControlType.Boolean,
     title: "📂 Social Links",
     defaultValue: true,
   },
-  /* 🔴 App.tsx 최하단 Social Links 설정 부분 찾아서 수정 */
   userLinks: {
     type: ControlType.Array,
     title: "  └ My Links",
@@ -292,7 +274,6 @@ addPropertyControls(App, {
       type: ControlType.Object,
       controls: {
         title: { type: ControlType.String, title: "Title" },
-        /* 🟢 수정: 아이콘 설정을 단순 Image에서 아래와 같이 확인 */
         linkIcon: {
           type: ControlType.Image,
           title: "Icon",
@@ -311,21 +292,20 @@ addPropertyControls(App, {
     },
   },
 
-  /* 📂 [6번 방] Stay In Touch - 폴더 구조 및 계층 연결 설정 */
   showStayInTouch: {
     type: ControlType.Boolean,
-    title: "📂 Stay In Touch", // 최상위 폴더 (이미지의 Yes/No 스위치)
+    title: "📂 Stay In Touch",
     defaultValue: true,
   },
   isVisible: {
     type: ControlType.Boolean,
     title: "  └ 👁️ Show Section",
     defaultValue: true,
-    hidden: (props) => !props.showStayInTouch, // 부모가 꺼지면 숨김
+    hidden: (props) => !props.showStayInTouch,
   },
   subscribeData: {
     type: ControlType.Array,
-    title: "  └ 📝 Edit Content", // 이미지의 'Edit Content'와 일치
+    title: "  └ 📝 Edit Content",
     hidden: (props) => !props.showStayInTouch || !props.isVisible,
     control: {
       type: ControlType.Object,
@@ -337,13 +317,13 @@ addPropertyControls(App, {
   },
   formAction: {
     type: ControlType.String,
-    title: "  └ 🔗 Action URL", // 이미지의 'Action URL'과 일치
+    title: "  └ 🔗 Action URL",
     placeholder: "https://formspree.io/f/your-id",
     hidden: (props) => !props.showStayInTouch || !props.isVisible,
   },
   calendarUrl: {
     type: ControlType.String,
-    title: "  └ 🗓️ Calendar URL", // 이미지의 'Calendar URL'과 일치
+    title: "  └ 🗓️ Calendar URL",
     defaultValue: "https://calendly.com/",
     hidden: (props) => !props.showStayInTouch || !props.isVisible,
   },
