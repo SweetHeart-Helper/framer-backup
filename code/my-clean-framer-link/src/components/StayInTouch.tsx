@@ -36,12 +36,16 @@ export default function StayInTouch({
   const [successMessage, setSuccessMessage] = React.useState("");
 
   const handleSubscribe = async () => {
+    // 1. 즉각적인 피드백을 위해 에러 메시지 비우기
+    setSuccessMessage("");
+
     if (!formAction || formAction === "https://" || formAction.trim() === "") {
       setSuccessMessage("⚠️ Please enter your Formspree URL in the sidebar.");
       return;
     }
 
     try {
+      // 2. 비동기 요청 시작
       const response = await fetch(formAction, {
         method: "POST",
         headers: {
@@ -55,16 +59,16 @@ export default function StayInTouch({
         }),
       });
 
+      // 3. 서버 응답이 오면 '그 즉시' 화면 전환 (대기 시간 0)
       if (response.ok) {
         setIsSubmitted(true);
-        setSuccessMessage(""); // 에러 메시지 초기화
+        // 이 밑에 어떤 setTimeout도 두지 마세요.
       } else {
         setSuccessMessage("⚠️ Submission failed. Please check your URL.");
       }
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred";
-      setSuccessMessage("⚠️ Error: " + errorMessage);
+      const errorMessage = error instanceof Error ? error.message : "Error";
+      setSuccessMessage("⚠️ " + errorMessage);
     }
   };
 
