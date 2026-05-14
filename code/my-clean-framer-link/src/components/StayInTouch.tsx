@@ -57,15 +57,14 @@ export default function StayInTouch({
 
       if (response.ok) {
         setIsSubmitted(true);
-        setNameInput("");
-        setEmail("");
-        setMessage("");
-        setSuccessMessage("");
+        setSuccessMessage(""); // 에러 메시지 초기화
       } else {
-        setSuccessMessage("⚠️ Failed to send. Please check your URL settings.");
+        setSuccessMessage("⚠️ Submission failed. Please check your URL.");
       }
-    } catch (error: any) {
-      setSuccessMessage("⚠️ Network error. Please try again later.");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred";
+      setSuccessMessage("⚠️ Error: " + errorMessage);
     }
   };
 
@@ -204,10 +203,10 @@ export default function StayInTouch({
                   Message Received! ☕
                 </h3>
                 <p style={{ color: theme.text, opacity: 0.7, margin: 0 }}>
-                  Thank you for reaching out.
-                  <br />
+                  Thank you for reaching out. <br />
                   Would you like to schedule a quick call?
                 </p>
+                {/* 🟢 전송 완료 직후 나타나는 캘린더 연결 버튼 */}
                 <a
                   href={calendarUrl}
                   target="_blank"
@@ -221,12 +220,6 @@ export default function StayInTouch({
                     alignItems: "center",
                     justifyContent: "center",
                   }}
-                  onMouseDown={(e) =>
-                    (e.currentTarget.style.transform = "scale(0.96)")
-                  }
-                  onMouseUp={(e) =>
-                    (e.currentTarget.style.transform = "scale(1)")
-                  }
                 >
                   Book a Coffee Chat →
                 </a>

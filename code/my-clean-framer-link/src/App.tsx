@@ -311,26 +311,22 @@ addPropertyControls(App, {
     },
   },
 
-  /* 📂 [6번 방] Stay In Touch - 기존 변수명 엄격 준수 */
-  isVisible: {
+  /* 📂 [6번 방] Stay In Touch - 폴더 구조 및 계층 연결 설정 */
+  showStayInTouch: {
     type: ControlType.Boolean,
-    title: "Show StayInTouch",
+    title: "📂 Stay In Touch", // 최상위 폴더 (이미지의 Yes/No 스위치)
     defaultValue: true,
   },
-  calendarUrl: {
-    type: ControlType.String,
-    title: "Coffee Chat URL",
-    defaultValue: "https://calendly.com/",
+  isVisible: {
+    type: ControlType.Boolean,
+    title: "  └ 👁️ Show Section",
+    defaultValue: true,
+    hidden: (props) => !props.showStayInTouch, // 부모가 꺼지면 숨김
   },
-  formAction: {
-    type: ControlType.String,
-    title: "Formspree URL",
-    placeholder: "https://formspree.io/f/your-id",
-  },
-  // subscribeData는 App.tsx 상단에서 배열로 사용하므로 명칭 유지
   subscribeData: {
     type: ControlType.Array,
-    title: "Subscribe Content",
+    title: "  └ 📝 Edit Content", // 이미지의 'Edit Content'와 일치
+    hidden: (props) => !props.showStayInTouch || !props.isVisible,
     control: {
       type: ControlType.Object,
       controls: {
@@ -338,5 +334,17 @@ addPropertyControls(App, {
         desc: { type: ControlType.String, title: "Desc" },
       },
     },
+  },
+  formAction: {
+    type: ControlType.String,
+    title: "  └ 🔗 Action URL", // 이미지의 'Action URL'과 일치
+    placeholder: "https://formspree.io/f/your-id",
+    hidden: (props) => !props.showStayInTouch || !props.isVisible,
+  },
+  calendarUrl: {
+    type: ControlType.String,
+    title: "  └ 🗓️ Calendar URL", // 이미지의 'Calendar URL'과 일치
+    defaultValue: "https://calendly.com/",
+    hidden: (props) => !props.showStayInTouch || !props.isVisible,
   },
 });
