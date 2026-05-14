@@ -283,6 +283,7 @@ addPropertyControls(App, {
     title: "📂 Social Links",
     defaultValue: true,
   },
+  /* 🔴 App.tsx 최하단 Social Links 설정 부분 찾아서 수정 */
   userLinks: {
     type: ControlType.Array,
     title: "  └ My Links",
@@ -291,9 +292,21 @@ addPropertyControls(App, {
       type: ControlType.Object,
       controls: {
         title: { type: ControlType.String, title: "Title" },
-        linkIcon: { type: ControlType.Image, title: "Icon" }, // 20.tsx의 이미지 아이콘
-        url: { type: ControlType.String, title: "URL" },
-        isCleared: { type: ControlType.Boolean, title: "✨ Clear" },
+        /* 🟢 수정: 아이콘 설정을 단순 Image에서 아래와 같이 확인 */
+        linkIcon: {
+          type: ControlType.Image,
+          title: "Icon",
+        },
+        url: {
+          type: ControlType.String,
+          title: "URL",
+          defaultValue: "https://",
+        },
+        isCleared: {
+          type: ControlType.Boolean,
+          title: "✨ Clear",
+          defaultValue: false,
+        },
       },
     },
   },

@@ -50,27 +50,49 @@ export function LinkButtons({ links, theme, accentColor }: LinkButtonsProps) {
               <div
                 style={{
                   ...buttonCardStyle,
-                  backgroundColor: theme.card,
-                  borderColor: isHovered ? accentColor : theme.border,
+                  backgroundColor: "#F9F9FB",
+                  borderColor: isHovered ? accentColor : "#E5E5E7", // 테두리도 배경에 맞춰 연하게 고정
                   boxShadow: isHovered ? `0 4px 12px ${accentColor}20` : "none",
                 }}
               >
                 <div style={contentWrapperStyle}>
-                  {" "}
                   {link.linkIcon && (
-                    <img src={link.linkIcon} style={iconStyle} alt="" />
+                    /* 🟢 수정된 이미지 출력 로직: 컨테이너 추가 */
+                    <div
+                      style={{
+                        width: "32px", // 아이콘 크기 고정
+                        height: "32px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                        overflow: "hidden",
+                      }}
+                    >
+                      <img
+                        src={link.linkIcon}
+                        alt=""
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                        }}
+                      />
+                    </div>
                   )}
+
                   <span
                     style={{
                       ...titleTextStyle,
-                      color: theme.text,
+                      color: "#1D1D1F",
+                      marginLeft: "12px", // 아이콘과 텍스트 사이 간격
                     }}
                   >
                     {link.title || "Link"}
                   </span>
                 </div>
 
-                <span style={{ color: theme.text, opacity: 0.5 }}>↗</span>
+                <span style={{ color: "#1D1D1F", opacity: 0.3 }}>↗</span>
               </div>
             </a>
           );
@@ -125,12 +147,6 @@ const contentWrapperStyle: React.CSSProperties = {
   display: "flex",
   alignItems: "center",
   gap: "12px",
-};
-
-const iconStyle: React.CSSProperties = {
-  width: "40px",
-  height: "40px",
-  objectFit: "contain",
 };
 
 const titleTextStyle: React.CSSProperties = {
