@@ -26,6 +26,8 @@ function App(props: any) {
     userStacks = [],
     viewAllUrl = "https://",
     userProjects = [],
+    showLinkSettings = true,
+    userLinks = [],
   } = props;
 
   const isDark = themeMode === "Dark";
@@ -37,21 +39,6 @@ function App(props: any) {
     card: useCustomColors ? customCard : isDark ? "#1A1A1A" : "#F5F5F7",
     border: useCustomColors ? customBorder : isDark ? "#262626" : "#E5E5E5",
   };
-
-  const myLinks = [
-    {
-      title: "Instagram",
-      url: "https://instagram.com",
-      linkIcon: "https://cdn.worldvectorlogo.com/logos/instagram-2016.svg",
-      isCleared: false,
-    },
-    {
-      title: "LinkedIn",
-      url: "https://linkedin.com",
-      linkIcon: "https://cdn.worldvectorlogo.com/logos/linkedin-icon-2.svg",
-      isCleared: false,
-    },
-  ];
 
   return (
     <div
@@ -85,16 +72,33 @@ function App(props: any) {
           theme={theme}
           accentColor={accentColor}
         />
-        <LinkButtons links={myLinks} theme={theme} accentColor={accentColor} />
-        <StayInTouch
-          isVisible={isVisible}
-          subscribeData={subscribeData}
-          theme={theme}
-          isDark={isDark}
-          accentColor={accentColor}
-          formAction={formAction}
-          calendarUrl={calendarUrl}
-        />
+        {/* --- Social Links (20.tsx 로직 기반 반응형) --- */}
+
+        {/* 🟢 20.tsx의 반응형 디자인이 담긴 LinkButtons 연결 */}
+        {showLinkSettings && userLinks && userLinks.length > 0 && (
+          <div style={{ marginTop: "40px", marginBottom: "40px" }}>
+            <LinkButtons
+              links={userLinks} // Framer에서 입력한 링크 배열 전달
+              theme={theme} // 20.tsx의 컬러 시스템 전달
+              accentColor={accentColor}
+            />
+          </div>
+        )}
+
+        {/* 🔴 [수정] StayInTouch 컴포넌트에 변수들을 연결해줘야 에러가 사라집니다. */}
+        <div style={{ marginTop: "60px" }}>
+          {isVisible && (
+            <StayInTouch
+              isVisible={isVisible}
+              subscribeData={subscribeData}
+              formAction={formAction}
+              calendarUrl={calendarUrl}
+              isDark={isDark}
+              theme={theme}
+              accentColor={accentColor}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
@@ -253,7 +257,7 @@ addPropertyControls(App, {
         link: {
           type: ControlType.String,
           title: "Link URL",
-          placeholder: "https://  ▼",
+          placeholder: "https:// (▼ Scroll)",
         },
         isCleared: {
           type: ControlType.Boolean,
@@ -271,6 +275,27 @@ addPropertyControls(App, {
         link: "https://",
       },
     ],
+  },
+  /* 🟢 5번 방 Social Links (이미지의 폴더 구조와 일치) */
+  /* 🟢 5번 방 Social Links 설정 */
+  showLinkSettings: {
+    type: ControlType.Boolean,
+    title: "📂 Social Links",
+    defaultValue: true,
+  },
+  userLinks: {
+    type: ControlType.Array,
+    title: "  └ My Links",
+    hidden: (props) => !props.showLinkSettings,
+    control: {
+      type: ControlType.Object,
+      controls: {
+        title: { type: ControlType.String, title: "Title" },
+        linkIcon: { type: ControlType.Image, title: "Icon" }, // 20.tsx의 이미지 아이콘
+        url: { type: ControlType.String, title: "URL" },
+        isCleared: { type: ControlType.Boolean, title: "✨ Clear" },
+      },
+    },
   },
 
   /* 📂 [6번 방] Stay In Touch - 기존 변수명 엄격 준수 */
