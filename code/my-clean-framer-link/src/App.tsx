@@ -1,18 +1,16 @@
 // src/App.tsx
 
 import ProfileHeader from "./components/ProfileHeader";
-import { ProjectList } from "./components/ProjectComponents";
 import { TechStackList } from "./components/TechStackList";
 import { LinkButtons } from "./components/LinkButtons";
 import StayInTouch from "./components/StayInTouch";
-import { addPropertyControls, ControlType } from "framer";
 
 function App(props: any) {
   const {
     name = "Assembler",
     tagline = "Building simple tools that solve real problems.",
     badgeText = "Available for Projects",
-    profileImage = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1000",
+    profileImage,
     accentColor = "#007AFF",
     themeMode = "Light",
     isVisible = true,
@@ -25,12 +23,17 @@ function App(props: any) {
     customCard = "#f5f5f7",
     customBorder = "#e5e5e5",
     userStacks = [],
-    viewAllUrl = "https://",
-    userProjects = [],
-    cmsProjects, // 🔥 CMS 연결을 위한 프롭스 추가
+    cmsProjects,
     showLinkSettings = true,
     userLinks = [],
   } = props;
+
+  const displayImage =
+    profileImage &&
+    typeof profileImage === "string" &&
+    profileImage.trim() !== ""
+      ? profileImage
+      : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=256";
 
   const isDark = themeMode === "Dark";
 
@@ -54,26 +57,26 @@ function App(props: any) {
           name={name}
           tagline={tagline}
           badgeText={badgeText}
-          profileImage={profileImage}
           theme={theme}
           accentColor={accentColor}
+          profileImage={displayImage}
         />
 
         <TechStackList techStacks={userStacks} theme={theme} isDark={isDark} />
 
         <div style={{ height: "40px" }} />
 
-        {/* 🔥 CMS가 연결되어 있으면 CMS를, 아니면 기존 수동 프로젝트 리스트를 보여줍니다 */}
-        {cmsProjects ? (
-          <div style={{ width: "100%" }}>{cmsProjects}</div>
-        ) : (
-          <ProjectList
-            projects={userProjects}
-            viewAllLink={viewAllUrl}
-            theme={theme}
-            accentColor={accentColor}
-          />
-        )}
+        <div style={{ width: "100%" }}>
+          {cmsProjects ? (
+            cmsProjects
+          ) : (
+            <div
+              style={{ textAlign: "center", padding: "20px", color: "gray" }}
+            >
+              Connect CMS Collection in the right panel.
+            </div>
+          )}
+        </div>
 
         {showLinkSettings && userLinks && userLinks.length > 0 && (
           <div style={{ marginTop: "40px", marginBottom: "40px" }}>
@@ -104,242 +107,3 @@ function App(props: any) {
 }
 
 export default App;
-
-addPropertyControls(App, {
-  // ... (기존 Profile Settings, Design System, Tech Stack 코드는 그대로 유지) ...
-  showProfileSettings: {
-    type: ControlType.Boolean,
-    title: "📂 Profile Settings",
-    defaultValue: true,
-  },
-  profileImage: {
-    type: ControlType.Image,
-    title: "└ Avatar",
-    hidden: (props) => !props.showProfileSettings,
-  },
-  name: {
-    type: ControlType.String,
-    title: "└ Name",
-    defaultValue: "Assembler",
-    hidden: (props) => !props.showProfileSettings,
-  },
-  tagline: {
-    type: ControlType.String,
-    title: "└ Tagline",
-    defaultValue: "Building simple tools that solve real problems.",
-    displayTextArea: true,
-    hidden: (props) => !props.showProfileSettings,
-  },
-  badgeText: {
-    type: ControlType.String,
-    title: "└ Badge",
-    defaultValue: "Available for Projects",
-    hidden: (props) => !props.showProfileSettings,
-  },
-
-  showDesignSystem: {
-    type: ControlType.Boolean,
-    title: "📂 Design System",
-    defaultValue: true,
-  },
-  themeMode: {
-    type: ControlType.Enum,
-    title: "└ Theme Mode",
-    options: ["Light", "Dark"],
-    optionTitles: ["☀️ Light", "🌙 Dark"],
-    defaultValue: "Light",
-    hidden: (props) => !props.showDesignSystem,
-  },
-  accentColor: {
-    type: ControlType.Color,
-    title: "└ Accent Color",
-    defaultValue: "#8b5cf6",
-    hidden: (props) => !props.showDesignSystem,
-  },
-  useCustomColors: {
-    type: ControlType.Boolean,
-    title: "└ Manual Override",
-    defaultValue: false,
-    hidden: (props) => !props.showDesignSystem,
-  },
-  customBg: {
-    type: ControlType.Color,
-    title: "  └ Custom BG",
-    hidden: (props) => !props.showDesignSystem || !props.useCustomColors,
-  },
-  customText: {
-    type: ControlType.Color,
-    title: "  └ Custom Text",
-    hidden: (props) => !props.showDesignSystem || !props.useCustomColors,
-  },
-  customCard: {
-    type: ControlType.Color,
-    title: "  └ Custom Card",
-    hidden: (props) => !props.showDesignSystem || !props.useCustomColors,
-  },
-  customBorder: {
-    type: ControlType.Color,
-    title: "  └ Custom Border",
-    hidden: (props) => !props.showDesignSystem || !props.useCustomColors,
-  },
-
-  showTechStack: {
-    type: ControlType.Boolean,
-    title: "📂 Tech Stack List",
-    defaultValue: true,
-  },
-  userStacks: {
-    type: ControlType.Array,
-    title: "  └ My Tech Stack",
-    hidden: (props) => !props.showTechStack,
-    control: {
-      type: ControlType.Object,
-      controls: {
-        stackName: { type: ControlType.String, title: "Name" },
-        stackIcon: {
-          type: ControlType.Image,
-          title: "Icon",
-        },
-        isCleared: {
-          type: ControlType.Boolean,
-          title: "✨ Clear",
-          defaultValue: false,
-        },
-      },
-    },
-    defaultValue: [
-      { stackName: "React", stackIcon: "" },
-      { stackName: "Next.js", stackIcon: "" },
-    ],
-  },
-
-  showProjectDetails: {
-    type: ControlType.Boolean,
-    title: "📂 Project Details",
-    defaultValue: true,
-  },
-
-  // 🔥 여기에 CMS 연결 슬롯을 추가합니다.
-  cmsProjects: {
-    type: ControlType.ComponentInstance,
-    title: "🔗 CMS 연결 (우선 적용)",
-    hidden: (props) => !props.showProjectDetails,
-  },
-
-  viewAllUrl: {
-    type: ControlType.String,
-    title: "  └ View All URL",
-    placeholder: "https://",
-    hidden: (props) => !props.showProjectDetails,
-  },
-  userProjects: {
-    type: ControlType.Array,
-    title: "  └ My Projects (수동 입력)",
-    hidden: (props) => !props.showProjectDetails,
-    control: {
-      type: ControlType.Object,
-      controls: {
-        title: { type: ControlType.String, title: "Title" },
-        status: { type: ControlType.String, title: "Status" },
-        desc: {
-          type: ControlType.String,
-          title: "Desc",
-          displayTextArea: true,
-          placeholder: "A smart tool...",
-        },
-        image: { type: ControlType.Image, title: "Image" },
-        color: { type: ControlType.Color, title: "Color" },
-        action: {
-          type: ControlType.String,
-          title: "Button",
-          placeholder: "Try it",
-        },
-        link: {
-          type: ControlType.String,
-          title: "Link URL",
-          placeholder: "https:// (▼ Scroll)",
-        },
-        isCleared: {
-          type: ControlType.Boolean,
-          title: "✨ Clear",
-          defaultValue: false,
-        },
-      },
-    },
-    defaultValue: [
-      {
-        title: "Mortgage Calculator",
-        status: "Featured",
-        desc: "A smart tool...",
-        action: "Try it",
-        link: "https://",
-      },
-    ],
-  },
-  showLinkSettings: {
-    type: ControlType.Boolean,
-    title: "📂 Social Links",
-    defaultValue: true,
-  },
-  userLinks: {
-    type: ControlType.Array,
-    title: "  └ My Links",
-    hidden: (props) => !props.showLinkSettings,
-    control: {
-      type: ControlType.Object,
-      controls: {
-        title: { type: ControlType.String, title: "Title" },
-        linkIcon: {
-          type: ControlType.Image,
-          title: "Icon",
-        },
-        url: {
-          type: ControlType.String,
-          title: "URL",
-          defaultValue: "https://",
-        },
-        isCleared: {
-          type: ControlType.Boolean,
-          title: "✨ Clear",
-          defaultValue: false,
-        },
-      },
-    },
-  },
-
-  showStayInTouch: {
-    type: ControlType.Boolean,
-    title: "📂 Stay In Touch",
-    defaultValue: true,
-  },
-  isVisible: {
-    type: ControlType.Boolean,
-    title: "  └ 👁️ Show Section",
-    defaultValue: true,
-    hidden: (props) => !props.showStayInTouch,
-  },
-  subscribeData: {
-    type: ControlType.Array,
-    title: "  └ 📝 Edit Content",
-    hidden: (props) => !props.showStayInTouch || !props.isVisible,
-    control: {
-      type: ControlType.Object,
-      controls: {
-        title: { type: ControlType.String, title: "Title" },
-        desc: { type: ControlType.String, title: "Desc" },
-      },
-    },
-  },
-  formAction: {
-    type: ControlType.String,
-    title: "  └ 🔗 Action URL",
-    placeholder: "https://formspree.io/f/your-id",
-    hidden: (props) => !props.showStayInTouch || !props.isVisible,
-  },
-  calendarUrl: {
-    type: ControlType.String,
-    title: "  └ 🗓️ Calendar URL",
-    defaultValue: "https://calendly.com/",
-    hidden: (props) => !props.showStayInTouch || !props.isVisible,
-  },
-});

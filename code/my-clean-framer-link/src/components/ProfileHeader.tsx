@@ -25,8 +25,9 @@ export default function ProfileHeader({
   accentColor,
 }: ProfileHeaderProps) {
   const finalAvatar =
-    profileImage ||
-    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400";
+    typeof profileImage === "string" && profileImage.trim() !== ""
+      ? profileImage
+      : "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400";
 
   return (
     <div style={profileHeaderStyle}>
